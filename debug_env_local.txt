@@ -1,0 +1,10 @@
+# Firebase Configuration
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=labre-lims-bb270
+NEXT_PUBLIC_FIREBASE_APP_ID=1:443719530871:web:d2d480f600a728d4018972
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyCJdczR7hf1fMAHewGcWTAOq-Rcxdj4fcc
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=labre-lims-bb270.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=443719530871
+
+# Firebase Admin SDK (Server-side only)
+# Point to your downloaded service account key
+GOOGLE_APPLICATION_CREDENTIALS=./labre-lims-bb270-firebase-adminsdk-fbsvc-0d7653c406.json

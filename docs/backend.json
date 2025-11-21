@@ -1,0 +1,1335 @@
+{
+  "entities": {
+    "Sample": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Sample",
+      "type": "object",
+      "description": "Represents a biological sample in the LIMS system.",
+      "properties": {
+        "sampleId": {
+          "type": "string",
+          "description": "Unique identifier for the sample entity. (e.g., SMP-2025-0001)"
+        },
+        "parentSampleId": {
+          "type": "string",
+          "description": "Reference to the parent sample if this is an aliquot/derived sample. Nullable."
+        },
+        "barcode": {
+          "type": "string",
+          "description": "Barcode or QR code value for the sample."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Reference to the Project to which this sample belongs. (Relationship: Project 1:N Sample)"
+        },
+        "sampleType": {
+          "type": "string",
+          "description": "Type of sample (e.g., blood, tissue, hair)."
+        },
+        "collectedBy": {
+          "type": "string",
+          "description": "Name/email of the person who collected the sample."
+        },
+        "dateCollected": {
+          "type": "string",
+          "description": "Date and time when the sample was collected (ISO datetime).",
+          "format": "date-time"
+        },
+        "dateReceived": {
+          "type": "string",
+          "description": "Date and time when the sample was received (ISO datetime).",
+          "format": "date-time"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source of the sample (e.g., “Sapi Bali #32” / farm id)."
+        },
+        "initialVolume": {
+          "type": "number",
+          "description": "Initial volume of the sample (numeric + unit)."
+        },
+        "currentVolume": {
+          "type": "number",
+          "description": "Current volume of the sample (numeric + unit)."
+        },
+        "storageLocationId": {
+          "type": "string",
+          "description": "Reference to the StorageUnit where the sample is stored. (Relationship: StorageUnit 1:N Sample)"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the sample (received, in_storage, processing, extracted, used, disposed)."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Email of the user who created the sample record."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the sample record was created.",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about the sample."
+        },
+        "riskLevel": {
+          "type": "string",
+          "description": "Risk level associated with the sample."
+        },
+        "consentFormId": {
+          "type": "string",
+          "description": "Identifier for the consent form related to the sample."
+        },
+        "approvalStatus": {
+          "type": "string",
+          "description": "Status of the sample approval (Pending, Approved, Registered)."
+        },
+        "approvedBy": {
+          "type": "string",
+          "description": "Email of the user who approved the sample."
+        },
+        "approvalDate": {
+          "type": "string",
+          "description": "Date when the sample was approved.",
+          "format": "date-time"
+        },
+        "wasteLogId": {
+          "type": "string",
+          "description": "Reference to the WasteLog entity, documenting the disposal of the sample. (Relationship: WasteLog 1:N Sample)"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the sample",
+          "items": {
+            "type": "string"
+          }
+        },
+        "labId": {
+          "type": "string",
+          "description": "Reference to the Lab to which this sample belongs. (Relationship: Lab 1:N Sample)"
+        },
+        "barcodeId": {
+          "type": "string",
+          "description": "Barcode ID associated with the sample."
+        },
+        "qrCode": {
+          "type": "string",
+          "description": "QR code data for the sample."
+        }
+      },
+      "required": [
+        "sampleId",
+        "projectId",
+        "sampleType",
+        "collectedBy",
+        "dateCollected",
+        "dateReceived",
+        "source",
+        "initialVolume",
+        "currentVolume",
+        "storageLocationId",
+        "status",
+        "createdBy",
+        "createdAt",
+        "barcode",
+        "labId"
+      ]
+    },
+    "DnaExtract": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "DnaExtract",
+      "type": "object",
+      "description": "Represents a DNA extract derived from a sample.",
+      "properties": {
+        "dnaId": {
+          "type": "string",
+          "description": "Unique identifier for the DNA extract entity. (e.g. DNA-2025-0001)"
+        },
+        "sampleId": {
+          "type": "string",
+          "description": "Reference to the parent Sample. (Relationship: Sample 1:N DnaExtract)"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Reference to the Project to which this extract belongs."
+        },
+        "barcode": {
+          "type": "string",
+          "description": "Barcode or QR code value for the DNA extract."
+        },
+        "dateExtracted": {
+          "type": "string",
+          "description": "Date when the DNA was extracted.",
+          "format": "date-time"
+        },
+        "extractionKitId": {
+          "type": "string",
+          "description": "Reference to the Reagent (extraction kit) used. (Relationship: Reagent 1:N DnaExtract)"
+        },
+        "operator": {
+          "type": "string",
+          "description": "Name of the operator who performed the extraction."
+        },
+        "yieldNgPerUl": {
+          "type": "number",
+          "description": "Yield of DNA in ng/uL."
+        },
+        "a260A280": {
+          "type": "number",
+          "description": "A260/A280 ratio for DNA purity."
+        },
+        "storageLocationId": {
+          "type": "string",
+          "description": "Reference to the StorageUnit where the DNA extract is stored. (Relationship: StorageUnit 1:N DnaExtract)"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the DNA extract (stored, used, disposed)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the DNA extract record was created.",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Email of the user who created the DNA extract record."
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this DNA extract belongs to."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the DNA extract",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "dnaId",
+        "sampleId",
+        "projectId",
+        "barcode",
+        "dateExtracted",
+        "operator",
+        "yieldNgPerUl",
+        "a260A280",
+        "storageLocationId",
+        "status",
+        "createdAt",
+        "createdBy",
+        "labId"
+      ]
+    },
+    "Experiment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Experiment",
+      "type": "object",
+      "description": "Represents an experiment conducted in the lab.",
+      "properties": {
+        "experimentId": {
+          "type": "string",
+          "description": "Unique identifier for the experiment entity. (e.g. EXP-2025-001)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the experiment."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of experiment (DNA extraction, PCR, Electrophoresis, etc.)."
+        },
+        "protocolId": {
+          "type": "string",
+          "description": "Reference to the Protocol used in the experiment. (Relationship: Protocol 1:N Experiment)"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Reference to the Project to which this experiment belongs. (Relationship: Project 1:N Experiment)"
+        },
+        "startTime": {
+          "type": "string",
+          "description": "Start time of the experiment.",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "End time of the experiment.",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Email of the user who created the experiment record."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the experiment record was created.",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the experiment (planned, running, completed, cancelled)."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about the experiment."
+        },
+        "templateId": {
+          "type": "string",
+          "description": "Reference to the ExperimentTemplate used (optional). (Relationship: ExperimentTemplate 1:N Experiment)"
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this experiment belongs to."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the experiment",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "experimentId",
+        "title",
+        "type",
+        "protocolId",
+        "projectId",
+        "startTime",
+        "endTime",
+        "createdBy",
+        "createdAt",
+        "status",
+        "labId"
+      ]
+    },
+    "ExperimentSample": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ExperimentSample",
+      "type": "object",
+      "description": "Represents the many-to-many relationship between Experiments and Samples/DNA Extracts.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ExperimentSample entity."
+        },
+        "experimentId": {
+          "type": "string",
+          "description": "Reference to the Experiment. (Relationship: Experiment 1:N ExperimentSample)"
+        },
+        "sampleId": {
+          "type": "string",
+          "description": "Reference to the Sample. Mutually exclusive with dnaId. (Relationship: Sample 1:N ExperimentSample)"
+        },
+        "dnaId": {
+          "type": "string",
+          "description": "Reference to the DNA extract. Mutually exclusive with sampleId. (Relationship: DnaExtract 1:N ExperimentSample)"
+        },
+        "role": {
+          "type": "string",
+          "description": "Role of the sample/DNA extract in the experiment (test, control_positive, control_negative, marker)."
+        },
+        "reagentBatchId": {
+          "type": "string",
+          "description": "Reference to the ReagentBatch used (if applicable). (Relationship: ReagentBatch 1:N ExperimentSample)"
+        },
+        "resultId": {
+          "type": "string",
+          "description": "Reference to the Result (nullable). (Relationship: Result 1:N ExperimentSample)"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about the sample/DNA extract in the experiment."
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this record belongs to."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the experiment sample",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["id", "experimentId", "role", "labId"]
+    },
+    "Result": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Result",
+      "type": "object",
+      "description": "Represents a result from an experiment.",
+      "properties": {
+        "resultId": {
+          "type": "string",
+          "description": "Unique identifier for the result entity."
+        },
+        "experimentId": {
+          "type": "string",
+          "description": "Reference to the Experiment. (Relationship: Experiment 1:N Result)"
+        },
+        "sampleId": {
+          "type": "string",
+          "description": "Reference to the Sample. Mutually exclusive with dnaId. (Relationship: Sample 1:N Result)"
+        },
+        "dnaId": {
+          "type": "string",
+          "description": "Reference to the DNA extract. Mutually exclusive with sampleId. (Relationship: DnaExtract 1:N Result)"
+        },
+        "resultType": {
+          "type": "string",
+          "description": "Type of result (numeric, qualitative, image, gel_band)."
+        },
+        "value": {
+          "type": "string",
+          "description": "Text value of the result (number or description)."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement for the result."
+        },
+        "fileId": {
+          "type": "string",
+          "description": "Reference to the Attachment (Drive file ID for images). (Relationship: Attachment 1:N Result)"
+        },
+        "verifiedBy": {
+          "type": "string",
+          "description": "Email of the user who verified the result."
+        },
+        "verifiedAt": {
+          "type": "string",
+          "description": "Timestamp when the result was verified.",
+          "format": "date-time"
+        },
+        "validationStatus": {
+          "type": "string",
+          "description": "Validation status of the result (pending, verified, retest_required)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the result record was created.",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Email of the user who created the result record."
+        },
+        "analysisPipelineId": {
+          "type": "string",
+          "description": "Reference to the AnalysisPipeline used (Relationship: AnalysisPipeline 1:N Result)"
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this result belongs to."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the result",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["resultId", "experimentId", "resultType", "value", "labId"]
+    },
+    "Reagent": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Reagent",
+      "type": "object",
+      "description": "Represents a reagent used in the lab.",
+      "properties": {
+        "reagentId": {
+          "type": "string",
+          "description": "Unique identifier for the reagent entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the reagent."
+        },
+        "lotNumber": {
+          "type": "string",
+          "description": "Lot number of the reagent."
+        },
+        "vendor": {
+          "type": "string",
+          "description": "Vendor of the reagent."
+        },
+        "quantity": {
+          "type": "number",
+          "description": "Quantity of the reagent."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement for the reagent (kit, mL, unit, tube)."
+        },
+        "expiryDate": {
+          "type": "string",
+          "description": "Expiry date of the reagent.",
+          "format": "date-time"
+        },
+        "storageCondition": {
+          "type": "string",
+          "description": "Storage condition for the reagent (-20°C, 4°C, RT)."
+        },
+        "storageLocationId": {
+          "type": "string",
+          "description": "Reference to the StorageUnit where the reagent is stored. (Relationship: StorageUnit 1:N Reagent)"
+        },
+        "minThreshold": {
+          "type": "number",
+          "description": "Minimum threshold for triggering an alert."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the reagent record was created.",
+          "format": "date-time"
+        },
+        "receivedBy": {
+          "type": "string",
+          "description": "Email of the user who received the reagent."
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this reagent belongs to."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the reagent",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "reagentId",
+        "name",
+        "lotNumber",
+        "vendor",
+        "quantity",
+        "unit",
+        "expiryDate",
+        "storageCondition",
+        "storageLocationId",
+        "minThreshold",
+        "createdAt",
+        "labId"
+      ]
+    },
+    "Consumable": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Consumable",
+      "type": "object",
+      "description": "Represents a consumable item used in the lab (tips, tubes, gloves).  Same structure as Reagents.",
+      "properties": {
+        "consumableId": {
+          "type": "string",
+          "description": "Unique identifier for the consumable entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the consumable."
+        },
+        "lotNumber": {
+          "type": "string",
+          "description": "Lot number of the consumable."
+        },
+        "vendor": {
+          "type": "string",
+          "description": "Vendor of the consumable."
+        },
+        "quantity": {
+          "type": "number",
+          "description": "Quantity of the consumable."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement for the consumable."
+        },
+        "expiryDate": {
+          "type": "string",
+          "description": "Expiry date of the consumable.",
+          "format": "date-time"
+        },
+        "storageCondition": {
+          "type": "string",
+          "description": "Storage condition for the consumable."
+        },
+        "storageLocationId": {
+          "type": "string",
+          "description": "Reference to the StorageUnit where the consumable is stored. (Relationship: StorageUnit 1:N Consumable)"
+        },
+        "minThreshold": {
+          "type": "number",
+          "description": "Minimum threshold for triggering an alert."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the consumable record was created.",
+          "format": "date-time"
+        },
+        "receivedBy": {
+          "type": "string",
+          "description": "Email of the user who received the consumable."
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this consumable belongs to."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the consumable",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "consumableId",
+        "name",
+        "lotNumber",
+        "vendor",
+        "quantity",
+        "unit",
+        "expiryDate",
+        "storageCondition",
+        "storageLocationId",
+        "minThreshold",
+        "createdAt",
+        "labId"
+      ]
+    },
+    "StorageUnit": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "StorageUnit",
+      "type": "object",
+      "description": "Represents a storage unit in the lab (freezer, chiller, cabinet, box).",
+      "properties": {
+        "storageId": {
+          "type": "string",
+          "description": "Unique identifier for the storage unit entity (e.g., FRZ-A)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the storage unit (Freezer A)."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of storage unit (freezer, chiller, cabinet, box)."
+        },
+        "parentStorageId": {
+          "type": "string",
+          "description": "Reference to the parent StorageUnit (supports hierarchy). Nullable. (Relationship: StorageUnit 1:N StorageUnit)"
+        },
+        "capacitySlots": {
+          "type": "number",
+          "description": "Optional capacity slots for the storage unit."
+        },
+        "temperature": {
+          "type": "number",
+          "description": "Temperature of the storage unit."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about the storage unit."
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this storage unit belongs to."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the storage unit",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["storageId", "name", "type", "labId"]
+    },
+    "Equipment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Equipment",
+      "type": "object",
+      "description": "Represents a piece of equipment in the lab.",
+      "properties": {
+        "equipmentId": {
+          "type": "string",
+          "description": "Unique identifier for the equipment entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the equipment."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of equipment."
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "Manufacturer of the equipment."
+        },
+        "model": {
+          "type": "string",
+          "description": "Model of the equipment."
+        },
+        "serialNumber": {
+          "type": "string",
+          "description": "Serial number of the equipment."
+        },
+        "location": {
+          "type": "string",
+          "description": "Location of the equipment in the lab."
+        },
+        "calibrationDueDate": {
+          "type": "string",
+          "description": "Date when the equipment calibration is due.",
+          "format": "date-time"
+        },
+        "lastCalibrated": {
+          "type": "string",
+          "description": "Date when the equipment was last calibrated.",
+          "format": "date-time"
+        },
+        "usageHours": {
+          "type": "number",
+          "description": "Total usage hours of the equipment."
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this equipment belongs to. (Relationship: Lab 1:N Equipment)"
+        },
+        "maintenanceRecordId": {
+          "type": "string",
+          "description": "Reference to the MaintenanceRecord entity, documenting the maintenance history of the equipment. (Relationship: MaintenanceRecord 1:N Equipment)"
+        },
+        "barcodeId": {
+          "type": "string",
+          "description": "Barcode ID associated with the equipment."
+        },
+        "qrCode": {
+          "type": "string",
+          "description": "QR code data for the equipment."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the equipment",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["equipmentId", "name", "type", "labId"]
+    },
+    "EquipmentUsageLog": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "EquipmentUsageLog",
+      "type": "object",
+      "description": "Represents a log of equipment usage.",
+      "properties": {
+        "logId": {
+          "type": "string",
+          "description": "Unique identifier for the equipment usage log entity."
+        },
+        "equipmentId": {
+          "type": "string",
+          "description": "Reference to the Equipment used. (Relationship: Equipment 1:N EquipmentUsageLog)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the User who used the equipment. (Relationship: User 1:N EquipmentUsageLog)"
+        },
+        "experimentId": {
+          "type": "string",
+          "description": "Reference to the Experiment during which the equipment was used. (Relationship: Experiment 1:N EquipmentUsageLog)"
+        },
+        "startTime": {
+          "type": "string",
+          "description": "Start time of the equipment usage.",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "End time of the equipment usage.",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about the equipment usage."
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this log belongs to."
+        }
+      },
+      "required": ["logId", "equipmentId", "userId", "experimentId", "startTime", "endTime", "labId"]
+    },
+    "Project": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Project",
+      "type": "object",
+      "description": "Represents a project in the lab.",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Unique identifier for the project entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the project."
+        },
+        "supervisorEmail": {
+          "type": "string",
+          "description": "Email of the project supervisor.",
+          "format": "email"
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Start date of the project.",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "End date of the project"
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this project belongs to."
+        }
+      },
+      "required": ["projectId", "title", "supervisorEmail", "startDate", "labId"]
+    },
+    "Protocol": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Protocol",
+      "type": "object",
+      "description": "Represents a Standard Operating Procedure (SOP) or protocol.",
+      "properties": {
+        "protocolId": {
+          "type": "string",
+          "description": "Unique identifier for the protocol (e.g., PROT-PCR-03)."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the protocol."
+        },
+        "version": {
+          "type": "string",
+          "description": "Version number of the protocol (e.g., 2.1)."
+        },
+        "content": {
+          "type": "string",
+          "description": "The full text content of the protocol."
+        },
+        "author": {
+          "type": "string",
+          "description": "Email of the user who authored or last updated the protocol."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the protocol was created.",
+          "format": "date-time"
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this protocol belongs to."
+        }
+      },
+      "required": ["protocolId", "title", "version", "content", "author", "createdAt", "labId"]
+    },
+    "ActivityLog": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ActivityLog",
+      "type": "object",
+      "description": "Represents a single audit trail event in the system.",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "description": "ISO 8601 timestamp of when the event occurred.",
+          "format": "date-time"
+        },
+        "user_email": {
+          "type": "string",
+          "description": "Email of the user who performed the action.",
+          "format": "email"
+        },
+        "action": {
+          "type": "string",
+          "description": "The type of action performed (e.g., create, update, delete, login)."
+        },
+        "target_entity": {
+          "type": "string",
+          "description": "The entity/collection that was affected (e.g., samples, experiments)."
+        },
+        "target_id": {
+          "type": "string",
+          "description": "The specific document ID that was affected."
+        },
+        "details": {
+          "type": "string",
+          "description": "A human-readable description of the action."
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this activity log belongs to."
+        }
+      },
+      "required": ["timestamp", "user_email", "action", "target_entity", "target_id", "details", "labId"]
+    },
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user's profile information.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The user's full name."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's role in the system.",
+          "enum": ["technician", "supervisor", "admin"]
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this user belongs to."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Whether the user account is active or disabled."
+        }
+      },
+      "required": ["name", "email", "role", "labId", "active"]
+    },
+    "Task": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Task",
+      "type": "object",
+      "description": "Represents an assigned task in the lab.",
+      "properties": {
+        "taskId": {
+          "type": "string",
+          "description": "Unique identifier for the task entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the task."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["DNA Extraction", "PCR", "Sample Reception", "Analysis"],
+          "description": "Type of the task."
+        },
+        "assignedTo": {
+          "type": "string",
+          "description": "User ID of the person the task is assigned to."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "User ID of the person who created the task."
+        },
+        "sampleIds": {
+          "type": "array",
+          "description": "An array of Sample IDs associated with this task.",
+          "items": { "type": "string" }
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Pending", "In Progress", "Completed", "Cancelled"],
+          "description": "Current status of the task."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the task was created.",
+          "format": "date-time"
+        },
+        "dueDate": {
+          "type": "string",
+          "description": "Optional due date for the task.",
+          "format": "date-time"
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this task belongs to."
+        }
+      },
+      "required": [
+        "taskId",
+        "title",
+        "type",
+        "assignedTo",
+        "createdBy",
+        "sampleIds",
+        "status",
+        "createdAt",
+        "labId"
+      ]
+    },
+    "Shipment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Shipment",
+      "type": "object",
+      "description": "Represents a log of items shipped between locations.",
+      "properties": {
+        "shipment_id": {
+          "type": "string",
+          "description": "Unique identifier for the shipment."
+        },
+        "item_type": {
+          "type": "string",
+          "enum": ["Sample", "Reagent", "Consumable", "Other"],
+          "description": "The type of item being shipped."
+        },
+        "item_id": {
+          "type": "string",
+          "description": "The ID of the specific item being shipped."
+        },
+        "item_name": {
+          "type": "string",
+          "description": "The name or identifier of the item being shipped."
+        },
+        "origin": {
+          "type": "string",
+          "description": "The origin location of the shipment."
+        },
+        "destination": {
+          "type": "string",
+          "description": "The destination location of the shipment."
+        },
+        "date_sent": {
+          "type": "string",
+          "description": "The date the shipment was sent.",
+          "format": "date-time"
+        },
+        "received_by": {
+          "type": "string",
+          "description": "Email of the person who received the shipment."
+        },
+        "received_date": {
+          "type": "string",
+          "description": "The date the shipment was received.",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["In Transit", "Received", "Cancelled"],
+          "description": "The current status of the shipment."
+        },
+        "labId": {
+          "type": "string",
+          "description": "The ID of the lab this shipment belongs to."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Email of the user who created the shipment record."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the shipment record was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "shipment_id",
+        "item_type",
+        "item_id",
+        "item_name",
+        "origin",
+        "destination",
+        "date_sent",
+        "status",
+        "labId",
+        "createdBy",
+        "createdAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": ["password", "anonymous"],
+    "customClaims": {
+      "labId": {
+        "type": "string",
+        "description": "The identifier for the laboratory the user belongs to. Used for data scoping."
+      },
+      "role": {
+        "type": "string",
+        "enum": ["admin", "supervisor", "technician", "assistant", "student"],
+        "description": "The user's role within the application. 'admin' and 'supervisor' roles have elevated privileges, such as deleting records and managing users."
+      },
+      "active": {
+        "type": "boolean",
+        "description": "Indicates if the user's account is currently active and allowed to sign in. Used to disable access without deleting the user."
+      }
+    }
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/samples/{sampleId}",
+        "definition": {
+          "entityName": "Sample",
+          "schema": {
+            "$ref": "#/backend/entities/Sample"
+          },
+          "description": "Stores biological sample data. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "sampleId",
+              "description": "Unique identifier for the sample."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/dna_extracts/{dnaId}",
+        "definition": {
+          "entityName": "DnaExtract",
+          "schema": {
+            "$ref": "#/backend/entities/DnaExtract"
+          },
+          "description": "Stores DNA extract data. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "dnaId",
+              "description": "Unique identifier for the DNA extract."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/experiments/{experimentId}",
+        "definition": {
+          "entityName": "Experiment",
+          "schema": {
+            "$ref": "#/backend/entities/Experiment"
+          },
+          "description": "Stores experiment data. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "experimentId",
+              "description": "Unique identifier for the experiment."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/experiment_samples/{id}",
+        "definition": {
+          "entityName": "ExperimentSample",
+          "schema": {
+            "$ref": "#/backend/entities/ExperimentSample"
+          },
+          "description": "Manages M2M relationship between experiments and samples. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "id",
+              "description": "Unique identifier for the experiment sample."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/results/{resultId}",
+        "definition": {
+          "entityName": "Result",
+          "schema": {
+            "$ref": "#/backend/entities/Result"
+          },
+          "description": "Stores experiment results. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "resultId",
+              "description": "Unique identifier for the result."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/reagents/{reagentId}",
+        "definition": {
+          "entityName": "Reagent",
+          "schema": {
+            "$ref": "#/backend/entities/Reagent"
+          },
+          "description": "Stores reagent data. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "reagentId",
+              "description": "Unique identifier for the reagent."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/consumables/{consumableId}",
+        "definition": {
+          "entityName": "Consumable",
+          "schema": {
+            "$ref": "#/backend/entities/Consumable"
+          },
+          "description": "Stores consumable data. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "consumableId",
+              "description": "Unique identifier for the consumable."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/storage_units/{storageId}",
+        "definition": {
+          "entityName": "StorageUnit",
+          "schema": {
+            "$ref": "#/backend/entities/StorageUnit"
+          },
+          "description": "Stores storage unit data. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "storageId",
+              "description": "Unique identifier for the storage unit."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/equipment/{equipmentId}",
+        "definition": {
+          "entityName": "Equipment",
+          "schema": {
+            "$ref": "#/backend/entities/Equipment"
+          },
+          "description": "Stores equipment data. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "equipmentId",
+              "description": "Unique identifier for the equipment."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/equipment_usage_logs/{logId}",
+        "definition": {
+          "entityName": "EquipmentUsageLog",
+          "schema": {
+            "$ref": "#/backend/entities/EquipmentUsageLog"
+          },
+          "description": "Stores equipment usage logs. Write access is open to all lab members.",
+          "params": [
+            {
+              "name": "logId",
+              "description": "Unique identifier for the equipment usage log."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/projects/{projectId}",
+        "definition": {
+          "entityName": "Project",
+          "schema": {
+            "$ref": "#/backend/entities/Project"
+          },
+          "description": "Stores project data. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "projectId",
+              "description": "Unique identifier for the project."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/protocols/{protocolId}",
+        "definition": {
+          "entityName": "Protocol",
+          "schema": {
+            "$ref": "#/backend/entities/Protocol"
+          },
+          "description": "Stores Standard Operating Procedures (SOPs). Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "protocolId",
+              "description": "Unique identifier for the protocol."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/activity_log/{logId}",
+        "definition": {
+          "entityName": "ActivityLog",
+          "schema": {
+            "$ref": "#/backend/entities/ActivityLog"
+          },
+          "description": "Stores audit trail events. This collection is append-only for all users to ensure data integrity. Only supervisors and admins can read the log.",
+          "params": [
+            {
+              "name": "logId",
+              "description": "Unique identifier for the activity log entry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/user_profiles/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information. Users can only manage their own profile. Admins can manage any profile.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The user's unique ID from Firebase Authentication."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/tasks/{taskId}",
+        "definition": {
+          "entityName": "Task",
+          "schema": {
+            "$ref": "#/backend/entities/Task"
+          },
+          "description": "Stores assigned lab tasks. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "taskId",
+              "description": "Unique identifier for the task."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/shipments/{shipmentId}",
+        "definition": {
+          "entityName": "Shipment",
+          "schema": {
+            "$ref": "#/backend/entities/Shipment"
+          },
+          "description": "Stores shipment and transfer logs for items. Write access is open to lab members, but deletion is restricted to supervisors and admins.",
+          "params": [
+            {
+              "name": "shipmentId",
+              "description": "Unique identifier for the shipment."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

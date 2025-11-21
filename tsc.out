@@ -1,0 +1,5 @@
+.next/types/app/api/admin/users/[uid]/role/route.ts(166,7): error TS2344: Type '{ __tag__: "POST"; __param_position__: "second"; __param_type__: { params: { uid: string; }; }; }' does not satisfy the constraint 'ParamCheck<RouteContext>'.
+  The types of '__param_type__.params' are incompatible between these types.
+    Type '{ uid: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/dashboard/dashboard/page.ts(2,24): error TS2307: Cannot find module '../../../../../src/app/dashboard/dashboard/page.js' or its corresponding type declarations.
+.next/types/app/dashboard/dashboard/page.ts(5,29): error TS2307: Cannot find module '../../../../../src/app/dashboard/dashboard/page.js' or its corresponding type declarations.

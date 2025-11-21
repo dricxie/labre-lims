@@ -1,0 +1,203 @@
+/**
+ * @file Firebase Security Rules for BioLIMSheet Application (Single-Lab, Ownership Model)
+ *
+ * @core_philosophy
+ *   This ruleset enforces a security model for a single laboratory where users
+ *   "own" the data they create. Only the owner, a supervisor, or an admin can
+ *   modify a document.
+ *
+ * @key_security_decisions
+ *   - Authenticated Access: The primary mechanism for data access.
+ *   - Ownership-Based Modification: `update` operations are restricted to the
+ *     document's creator (`createdById`).
+ *   - Role-Based Overrides (RBAC): `supervisor` and `admin` roles can override
+ *     ownership rules to edit or delete any document.
+ *   - Data Transparency: All authenticated users can still read (`get`, `list`) all
+ *     data to foster collaboration.
+ */
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    //-------------------- Helper Functions --------------------
+    function isSignedInAndActive() {
+      // Allow any authenticated user for now.
+      // Verification can be enforced by the application logic if needed.
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      // Checks if the user has the 'admin' role in their custom claims.
+      return request.auth.token.role == 'admin';
+    }
+
+    function isSupervisor() {
+      // Checks if the user has the 'supervisor' role in their custom claims.
+      return request.auth.token.role == 'supervisor';
+    }
+    
+    function isOwner(userId) {
+      // Checks if the logged-in user is the owner of a document based on the provided userId.
+      return request.auth.uid == userId;
+    }
+    
+    function isDocumentOwner() {
+      // Checks ownership on an EXISTING DOCUMENT (for updates).
+      // Compares the user's UID with the 'createdById' field in the document.
+      return request.auth.uid == resource.data.createdById;
+    }
+
+    function isCreatingOwnDocument() {
+      // Ensures that when CREATING A NEW DOCUMENT, the 'createdById' field is set to the user's own UID.
+      return request.auth.uid == request.resource.data.createdById;
+    }
+
+    function isCreatingOwnLogEntry() {
+      // Specifically for activity logs, checks that the 'user_id' field matches the user's UID.
+      return request.auth.uid == request.resource.data.user_id;
+    }
+    
+    //-------------------- General Collection Rules --------------------
+    
+    // Individual `match` blocks for each collection.
+    // The same rules are applied to all of these collections.
+    
+    match /samples/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      // DELETE is now handled via Server Action (Admin SDK) to ensure storage cleanup.
+      allow delete: if false; 
+    }
+
+    match /dna_extracts/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /experiments/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /experiment_samples/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /results/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /reagents/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /consumables/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /storage_units/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      // Prevent updating 'occupied_slots' directly from client.
+      // Prevent updating 'sample_count' directly from client (should be handled by server action).
+      allow update: if isSignedInAndActive() 
+                    && (isDocumentOwner() || isSupervisor() || isAdmin())
+                    && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['occupied_slots', 'sample_count']);
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+
+      // Subcollection: slots
+      // CLIENTS CANNOT WRITE TO SLOTS. MUST USE SERVER ACTIONS.
+      match /slots/{slotId} {
+        allow read: if isSignedInAndActive();
+        allow write: if false; 
+      }
+    }
+
+    match /storage_types/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /equipment/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /equipment_usage_logs/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /projects/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /protocols/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /tasks/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+
+    match /shipments/{docId} {
+      allow get, list: if isSignedInAndActive();
+      allow create: if isSignedInAndActive() && isCreatingOwnDocument();
+      allow update: if isSignedInAndActive() && (isDocumentOwner() || isSupervisor() || isAdmin());
+      allow delete: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+    }
+    
+    //-------------------- Specific Collection Rules --------------------
+
+    // Specific rules for user profiles.
+    match /user_profiles/{userId} {
+      allow get: if isSignedInAndActive() && (isOwner(userId) || isSupervisor() || isAdmin());
+      allow list: if isSignedInAndActive() && (isSupervisor() || isAdmin());
+      allow create: if isSignedInAndActive() && (isOwner(userId) || isAdmin());
+      allow update: if isSignedInAndActive() && (isOwner(userId) || isAdmin());
+      allow delete: if false; // Profiles cannot be deleted.
+    }
+
+    // Specific rules for the activity log.
+    match /activity_log/{logId} {
+      allow get, list: if isSignedInAndActive() && (isAdmin() || isSupervisor());
+      // All active users must be able to create a log entry when they perform an action.
+      // THIS IS THE CRITICAL FIX: Use the correct function for this collection.
+      allow create: if isSignedInAndActive() && isCreatingOwnLogEntry();
+      allow update, delete: if false; // Logs cannot be modified or deleted.
+    }
+  }
+}
