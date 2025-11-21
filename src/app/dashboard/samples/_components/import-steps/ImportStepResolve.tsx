@@ -137,7 +137,7 @@ export function ImportStepResolve({
         }
     };
 
-    const batchOccupiedSlotsMap = React.useMemo(() => {
+    const batchOccupiedSlots = React.useMemo(() => {
         const map = new Map<string, string>();
         if (activeStorage) {
             rows.forEach((row, idx) => {
@@ -146,7 +146,7 @@ export function ImportStepResolve({
                 }
             });
         }
-        return map;
+        return new Set(map.keys());
     }, [rows, activeStorage]);
 
     return (
@@ -383,7 +383,7 @@ export function ImportStepResolve({
                                     <ScrollArea className="flex-1">
                                         <BatchGridAssign
                                             storage={activeStorage}
-                                            batchOccupiedSlots={batchOccupiedSlotsMap}
+                                            batchOccupiedSlots={batchOccupiedSlots}
                                             dbOccupiedSlots={activeStorage.id === currentStorageId ? liveOccupiedSlots : new Set()}
                                             selectedSlot={currentRow?.normalized.position_label}
                                             onSlotClick={(slot) => {

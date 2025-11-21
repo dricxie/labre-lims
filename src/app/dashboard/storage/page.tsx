@@ -167,7 +167,7 @@ export default function StoragePage() {
     const map = new Map<string, { id: string; label: string; type: 'sample' | 'dna_extract' | 'batch' | 'unknown' }>();
 
     selectedSamples.forEach(s => {
-      if (s.position_label) {
+      if (s.position_label && s.id) {
         map.set(s.position_label.toUpperCase(), {
           id: s.id,
           label: s.sample_id,
@@ -177,7 +177,7 @@ export default function StoragePage() {
     });
 
     selectedExtracts.forEach(e => {
-      if (e.storage_position_label) {
+      if (e.storage_position_label && e.id) {
         map.set(e.storage_position_label.toUpperCase(), {
           id: e.id,
           label: e.dna_id,
